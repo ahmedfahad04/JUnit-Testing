@@ -24,6 +24,7 @@ public class Password implements Serializable {
         return favouriteWord;
     }
 
+    // TODO: Test it (DONE)
     void setPassword() {
         int maxAttempts = 3;
         boolean returnToMainProgram = false;
@@ -42,7 +43,7 @@ public class Password implements Serializable {
                     System.out.printf("You Have %d more Tries Left\n\n", remainingAttempts);
                 } else {
                     System.out.println("You've reached the maximum number of attempts.");
-                    System.exit(0);
+                    System.exit(0); // this should be placed after Main.main(null)
                     Main.main(null);
                     System.out.println("Calling System Exit...");
                 }
@@ -55,17 +56,19 @@ public class Password implements Serializable {
     }
 
     public void resetPassword() {
-        for (int i = 0; true; i++) {
-            String fav = Input.inputLine("\nEnter Your Favourite Word : ");
+        int maxAttempts = 3;
+
+        for (int i = 1; i <= maxAttempts; i++) {
+            String fav = inputHandler.inputLine("\nEnter Your Favorite Word : ");
             if (fav.equals(getFavouriteWord())) {
                 this.setPassword();
-                break;
-            } else if (i == 3) {
+                break; // Exit the loop if the favorite word is correct
+            } else if (i == maxAttempts) {
+                System.exit(0); // this should be placed after Main.main(null)
                 Main.main(null);
-                System.exit(0);
             } else {
                 System.out.println("\nKINDLY ENTER IN CONSCIOUSNESS");
-                System.out.printf("You Have %d more Tries Left\n\n", 3 - i);
+                System.out.printf("You Have %d more Tries Left\n\n", maxAttempts - i);
             }
         }
     }

@@ -2,6 +2,7 @@ package market;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Seller extends Person implements Serializable, Display {
     private ArrayList<String> hisItemsIds = new ArrayList<>();
@@ -9,12 +10,22 @@ public class Seller extends Person implements Serializable, Display {
     private String id;
     private Password passwordObject;
 
+    private InputHandler inputHandler;
+
     Seller() {
         super();
         setContactNo();
         passwordObject = new Password();
         setId(String.format("%s%d", "QAM-Seller-", Record.sellersRecord.size() + 1));
     }
+
+    public Seller(InputHandler inputHandler) {
+        this.inputHandler = inputHandler;
+        setContactNo();
+        passwordObject = new Password();
+        setId(String.format("%s%d", "QAM-Seller-", Record.sellersRecord.size() + 1));
+    }
+
 
     public void sell() {
         Item item = new Item(this.id);
@@ -29,37 +40,55 @@ public class Seller extends Person implements Serializable, Display {
         return hisItemsIds;
     }
 
-    public void setContactNo() {
-        String contactNo;
-        char[] contactArray;
-        for (int i = 0; true; i++) {
-            contactNo = Input.inputWord("Enter Contact No : ");
-            contactArray = contactNo.toCharArray();
-            boolean correctNo = false;
-            if (contactArray.length == 12) {
-                for (int j = 0; j < 12; j++) {
-                    if (contactArray[4] == '-') correctNo = true;
-                    else if (Checks.isInteger(Character.toString(contactArray[j]))) correctNo = true;
-                    else {
-                        correctNo = false;
-                        break;
-                    }
-                }
-                if (correctNo) {
-                    this.contactNo = contactNo;
-                    break;
-                }
-            } else if (i == 3) {
+    // *** updated ***
+
+    // TODO: To be Tested
+    void setContactNo() {
+        int maxAttempts = 3;
+
+        for (int i = 1; i <= maxAttempts; i++) {
+            String contactNo = inputHandler.inputLine("Enter Contact No : ");
+
+            if (isValidContactNumber(contactNo)) {
+                this.contactNo = contactNo;
+                System.out.println("Correct format....");
+                break;
+            } else if (i == maxAttempts) {
                 Main.main(null);
                 System.exit(0);
             } else {
                 System.out.println("\nKINDLY ENTER A VALID Contact No#");
                 System.out.println("Format : 0 3 _ _ - _ _ _ _ _ _ _");
-                System.out.printf("You Have %d more Tries Left\n\n", 3 - i);
+                System.out.printf("You Have %d more Tries Left\n\n", maxAttempts - i);
             }
         }
     }
 
+    // TODO: To be Tested
+    /* Possible test Cases:
+    * 1. Testing if contact number is equal to 12
+    * 2. Testing if all the characters are digits
+    * 3. Testing if we have - after initial 4 digits
+    * */
+    public boolean isValidContactNumber(String contactNo) {
+        char[] contactArray = contactNo.toCharArray();
+        if (contactArray.length != 12) {
+            System.out.println("Contact length is less than 12: "+ Arrays.toString(contactArray));
+            return false;
+        }
+        for (int j = 0; j < 12; j++) {
+            if (j == 4 && contactArray[j] == '-') {
+                continue; // Skip hyphen
+            }
+
+            if (!Character.isDigit(contactArray[j])) {
+                return false; // Not a digit
+            }
+        }
+        return true; // Valid contact number
+    }
+
+    // *** updated ***
     public String getContactNo() {
         return contactNo;
     }

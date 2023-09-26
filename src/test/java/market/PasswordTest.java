@@ -44,22 +44,17 @@ class PasswordTest {
 
     @DisplayName("Test when the maxAttempt expire, the password resetting option disappears and redirect to Home page")
     @Test
-    public void testMaxAttemptExpiry() throws Exception {
+    public void testMaxPasswordInsertionAttemptExpiry() throws Exception {
         // Create an instance of your class that contains the setPassword method
         InputHandler mockInputHandler = new MockInputHandler("test", "test2", "test", "test22", "test", "test44");
         password = new Password(mockInputHandler);
 
+        // Check the System.exit() call, as we have suppressed our limit of setting new password
         SystemLambda.catchSystemExit(() -> {
             password.setPassword();
         });
 
-        // Call the setPassword method
-//        password.setPassword();
-
-        // Check that the password is correctly set
-//        assertEquals("test", password.getPassword());
     }
-
 
 
 }
