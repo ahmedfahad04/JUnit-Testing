@@ -1,19 +1,23 @@
 package Communication_Simulation.src.question;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import Communication_Simulation.src.question.Customer;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class CustomerTest {
+
+    /* TOTAL 4 methods of this class Tested*/
 
     private static Customer customer1;
     private static Customer customer2;
     private static Operator operator;
 
-    @BeforeAll
-    public static void setUp() {
+    @BeforeEach
+    void setUp() {
         operator = new Operator(20, 2.5, 5, 1.5, 1);
         Bill bill = new Bill(100.0); // Create a mock Bill (replace with actual implementation)
 
@@ -25,7 +29,7 @@ public class CustomerTest {
     }
 
     /*
-     * [VI] Testing talk() method
+     * [I] Testing talk() method
      *
      * Possible Test Cases:
      * 1. Testing talk method with valid duration
@@ -66,7 +70,7 @@ public class CustomerTest {
     }
 
     /*
-     * [VII] Testing message() method
+     * [II] Testing message() method
      *
      * Possible Test Cases:
      * 1. Testing message method with valid quantity
@@ -108,7 +112,7 @@ public class CustomerTest {
     }
 
     /*
-     * [VII] Testing connection() method
+     * [III] Testing connection() method
      *
      * Possible Test Cases:
      * 1. Testing connection method with valid data amount
@@ -127,15 +131,19 @@ public class CustomerTest {
         double initialBalance = customer1.getBill().getLimitingAmount();
         double negativeAmount = -50.0; // Negative amount, invalid
 
-        customer1.connection(negativeAmount);
-
+        Throwable exception = assertThrows(
+                IllegalArgumentException.class, () -> {
+                    customer1.connection(negativeAmount);
+                }
+        );
+        assertEquals("Number of data must be non-negative.", exception.getMessage());
         assertEquals(initialBalance, customer1.getBill().getLimitingAmount(), 0.001); // Balance should remain unchanged
         assertEquals(0.0, customer1.getTotalInternetUsage(), 0.001); // No internet usage should be recorded
         assertEquals(0.0, customer1.getOperator().getTotalInternetUsage(), 0.001); // No internet usage should be recorded
     }
 
     /*
-     * [VIII] Testing setAge() method
+     * [IV] Testing setAge() method
      *
      * Possible Test Cases:
      * 1. Testing connection method with valid data amount

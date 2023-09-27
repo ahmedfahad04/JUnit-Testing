@@ -7,12 +7,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class OperatorTest {
 
-   private static Customer customer;
+    /* TOTAL 6 methods of this class Tested*/
+    
+    private static Customer customer;
     private static Operator operator;
 
     @BeforeAll
     static void setUp() {
         operator = new Operator(20, 2.5, 5, 1.5, 1);
+        customer = new Customer(33, "Akib", 25, operator, 1000);
     }
 
     /*
@@ -185,6 +188,43 @@ class OperatorTest {
         assertEquals("Discount rate must be between 0-100.", exception.getMessage());
     }
 
+
+    /*
+     * [V] Testing addInternetUsage() method
+     *
+     * Possible Test Cases:
+     * 1. Testing addInternetUsage for valid amount
+     * 2. Testing addInternetUsage Rate when discount = 0
+     * 3. Testing Discount Rate when discount = 100
+     * 4. Testing Discount Rate when discount < 0
+     * 5. Testing Discount Rate when discount > 100
+     * */
+
+    @Test
+    public void testAddInternetUsageValidAmount() {
+        double initialInternetUsage = customer.getTotalInternetUsage();
+        double amount = 50.0; // Set a valid amount
+
+        customer.connection(amount); // connect and use internet
+        operator.addInternetUsage(amount);
+
+        assertEquals(initialInternetUsage + amount, customer.getTotalInternetUsage(), 0.001);
+    }
+
+    @Test
+    public void testAddInternetUsageNegativeAmount() {
+        double initialInternetUsage = customer.getTotalInternetUsage();
+        double negativeAmount = -50.0; // Attempting to add a negative amount
+
+        Throwable exception = assertThrows(
+                IllegalArgumentException.class, () -> {
+                    operator.addInternetUsage(negativeAmount);
+                    customer.connection(negativeAmount);
+                }
+        );
+        assertEquals("Number of data must be non-negative.", exception.getMessage());
+        assertEquals(initialInternetUsage, customer.getTotalInternetUsage(), 0.001); // Internet usage should remain unchanged
+    }
 
 
 }

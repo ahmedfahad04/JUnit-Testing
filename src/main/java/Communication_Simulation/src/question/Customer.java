@@ -120,20 +120,17 @@ public class Customer {
 	 * @param amount Number of data as MB.
 	 */
 	public void connection(double amount) {
-		try {
-			if(amount < 0.0)
-				throw new IllegalArgumentException("Number of data must be non-negative.");
-			
-			final double cost = operator.calculateNetworkCost(amount);
-			
-			if(bill.check(cost)) {
-				bill.add(cost);		// Add the network cost to the bill.
-				operator.addInternetUsage(amount);
-				totalInternetUsage += amount;
-			}
-		} catch(final IllegalArgumentException e) {
-			System.out.println(e.getMessage());
+		if(amount < 0.0)
+			throw new IllegalArgumentException("Number of data must be non-negative.");
+
+		final double cost = operator.calculateNetworkCost(amount);
+
+		if(bill.check(cost)) {
+			bill.add(cost);		// Add the network cost to the bill.
+			operator.addInternetUsage(amount);
+			totalInternetUsage += amount;
 		}
+
 	}
 	
 	/**

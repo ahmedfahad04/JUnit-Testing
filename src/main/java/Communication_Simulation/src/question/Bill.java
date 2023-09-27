@@ -88,8 +88,13 @@ public class Bill {
 	 * @param amount New limiting amount of the bill.
 	 */
 	public void changeTheLimit(double amount) {
-		if(amount >= currentDebt)
+
+		if(amount < 0){
+			throw new IllegalArgumentException("Amount can't be negative");
+		}
+		else if (amount >= currentDebt) {
 			limitingAmount = amount;
+		}
 	}
 	
 	/**
