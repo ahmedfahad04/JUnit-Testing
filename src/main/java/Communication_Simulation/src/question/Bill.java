@@ -116,7 +116,7 @@ public class Bill {
 	 * Getter method for totalMoneySpent.
 	 * @return Total amount of money the customer has spent for paying their bills over the course of simulation.
 	 */
-	public double getTotalMoneySpent() {
+	public double  getTotalMoneySpent() {
 		return totalMoneySpent;
 	}
 

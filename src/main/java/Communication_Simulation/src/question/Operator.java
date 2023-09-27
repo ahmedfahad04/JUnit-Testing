@@ -69,12 +69,24 @@ public class Operator {
 	 * @return Talking cost.
 	 */
 	public double calculateTalkingCost(int minute, Customer customer) {
-		// Talking cost must be the amount of minutes times the operator�s talking charge per minute.
-		double cost = minute * talkingCharge;
+
+		double cost = 0.0;
 		
-		// Apply discount if the customer�s age is below age 18 (18 is excluded) or higher than 65 (65 is excluded).
-		if(customer.getAge() < 18 || customer.getAge() > 65)
-			cost *= (double)(100 - discountRate) / 100.0;
+		try{
+			if (minute < 0) {
+				throw new IllegalArgumentException("Time(minute) can't be negative");
+			}
+
+			// Talking cost must be the amount of minutes times the operator�s talking charge per minute.
+			cost = minute * talkingCharge;
+
+			// Apply discount if the customer�s age is below age 18 (18 is excluded) or higher than 65 (65 is excluded).
+			if(customer.getAge() < 18 || customer.getAge() > 65)
+				cost *= (double)(100 - discountRate) / 100.0;
+		} catch(final IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+		}
+
 		
 		return cost;
 	}

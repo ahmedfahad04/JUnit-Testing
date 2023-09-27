@@ -83,6 +83,8 @@ public class Customer {
 					totalSpentTalkingTime += minute;
 					other.totalSpentTalkingTime += minute;
 				}
+			} else {
+				throw new IllegalArgumentException("You can't call yourself");
 			}
 		} catch(final IllegalArgumentException e) {
 			System.out.println(e.getMessage());
@@ -151,7 +153,6 @@ public class Customer {
 		try {
 			if(age < 0)
 				throw new IllegalArgumentException("Age must be non-negative.");
-		
 			this.age = age;
 			
 		} catch(final IllegalArgumentException e) {

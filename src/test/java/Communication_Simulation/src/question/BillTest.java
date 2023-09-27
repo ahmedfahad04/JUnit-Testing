@@ -29,7 +29,6 @@ class BillTest {
      * 4. Testing pay method with Negative Payment Amount
      * */
 
-
     @Test
     public void testPayPartialAmount() {
         double initialDebt = 100.0;
@@ -71,7 +70,7 @@ class BillTest {
     * So, this test helped us to detect this validation criteria for this method
     * */
     @Test
-    public void testNegativeAmount() {
+    public void testPayNegativeAmount() {
         double initialDebt = 100.0;
         double payment = -10.0;
 
