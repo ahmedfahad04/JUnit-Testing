@@ -68,6 +68,10 @@ public class Bill {
 	 * @param amount Amount to be payed from the current debt.
 	 */
 	public void pay(double amount) {
+		if (amount < 0){
+			throw new IllegalArgumentException("Amount must be > 0");
+		}
+
 		if(amount < currentDebt) {
 			currentDebt -= amount;
 			totalMoneySpent += amount;

@@ -2,22 +2,12 @@ package Communication_Simulation.src.question;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class OperatorTest {
 
-    /*
-    * Testing calculateTalkingCost() method
-    *
-    * Possible Test Cases:
-    * 1. Testing Talking Cost without discount
-    * 2. Testing Talking Cost with discount when age > 65
-    * 3. Testing Talking Cost with discount when age < 18
-    * 4. Testing Talking Cost with discount when age > 18 and age < 65
-    * */
-
-    private static Customer customer;
+   private static Customer customer;
     private static Operator operator;
 
     @BeforeAll
@@ -25,17 +15,27 @@ class OperatorTest {
         operator = new Operator(20, 2.5, 5, 1.5, 1);
     }
 
+    /*
+     * [I] Testing calculateTalkingCost() method
+     *
+     * Possible Test Cases:
+     * 1. Testing Talking Cost without discount
+     * 2. Testing Talking Cost with discount when age > 65
+     * 3. Testing Talking Cost with discount when age < 18
+     * 4. Testing Talking Cost with discount when age > 18 and age < 65
+     * */
+
     @Test
     public void testCalculateTalkingCostWithoutDiscount() {
         customer = new Customer(25, "Rushed", 30, operator, 1000);
-        double talkingCost = operator.calculateTalkingCost(10, customer); // Assuming 10 minutes of talking
+        double talkingCost = operator.calculateTalkingCost(10, customer);
         assertEquals(10.0 * operator.getTalkingCharge(), talkingCost, 0.001); // Adjust delta as needed
     }
 
     @Test
     public void testCalculateTalkingCostWithUnder18Discount() {
         customer = new Customer(15, "Hashem", 15, operator, 1000);
-        double talkingCost = operator.calculateTalkingCost(10, customer); // Assuming 10 minutes of talking
+        double talkingCost = operator.calculateTalkingCost(10, customer);
         double talkingCostWithDiscount = 10.0 * operator.getTalkingCharge() * (double)(100 - operator.getDiscountRate());
         assertEquals(talkingCostWithDiscount / 100.0, talkingCost, 0.001); // Adjust delta as needed
     }
@@ -43,7 +43,7 @@ class OperatorTest {
     @Test
     public void testCalculateTalkingCostWithOver65Discount() {
         customer = new Customer(23, "Wasim", 75, operator, 1000);
-        double talkingCost = operator.calculateTalkingCost(10, customer); // Assuming 10 minutes of talking
+        double talkingCost = operator.calculateTalkingCost(10, customer);
         double talkingCostWithDiscount = 10.0 * operator.getTalkingCharge() * (double)(100 - operator.getDiscountRate());
         assertEquals(talkingCostWithDiscount / 100.0, talkingCost, 0.001); // Adjust delta as needed
     }
@@ -51,12 +51,13 @@ class OperatorTest {
     @Test
     public void testCalculateTalkingCostWithBothDiscounts() {
         customer = new Customer(33, "Abrar", 45, operator, 1000);
-        double talkingCost = operator.calculateTalkingCost(10, customer); // Assuming 10 minutes of talking
-        assertNotEquals(10.0 * operator.getTalkingCharge() * (double)(100 - operator.getDiscountRate()) / 100.0, talkingCost, 0.001); // Adjust delta as needed
+        double talkingCost = operator.calculateTalkingCost(10, customer);
+        double talkingCostWithDiscount = 10.0 * operator.getTalkingCharge() * (double)(100 - operator.getDiscountRate()) / 100.0;
+        assertNotEquals(talkingCostWithDiscount, talkingCost, 0.001); // Adjust delta as needed
     }
 
     /*
-     * Testing calculateMessageCost() method
+     * [II] Testing calculateMessageCost() method
      *
      * Possible Test Cases:
      * 1. Testing Messaging Cost without discount
@@ -90,4 +91,100 @@ class OperatorTest {
         double costWithDiscount = 10.0 * messageCost * (100 - discountRate) / 100.0;
         assertEquals(costWithDiscount, cost, 0.1);
     }
+
+    /*
+     * [III] Testing setTalkingCharge() method
+     *
+     * Possible Test Cases:
+     * 1. Testing Talking Charge with +ve value
+     * 2. Testing Talking Charge when charge = 0
+     * 3. Testing Talking Charge with -ve value
+     * */
+
+    @Test
+    public void testSetTalkingChargePositiveValue() {
+
+        double expectedCharge = 0.5; // Set expected talking charge
+        operator.setTalkingCharge(expectedCharge);
+        assertEquals(expectedCharge, operator.getTalkingCharge(), 0.001); // Assuming there's a getTalkingCharge method
+    }
+
+    @Test
+    public void testSetTalkingChargeZeroValue() {
+        double expectedCharge = 0.0; // Set expected talking charge
+        operator.setTalkingCharge(expectedCharge);
+        assertEquals(expectedCharge, operator.getTalkingCharge(), 0.001);
+    }
+
+    @Test
+    public void testSetTalkingChargeNegativeValue() {
+        double invalidCharge = -0.5; // Set invalid negative charge
+
+        Throwable exception = assertThrows(
+                IllegalArgumentException.class, () -> {
+                    operator.setTalkingCharge(invalidCharge);
+                }
+        );
+
+        assertEquals("Talking charge must be non-negative.", exception.getMessage());
+    }
+
+    /*
+     * [IV] Testing setDiscountRate() method
+     *
+     * Possible Test Cases:
+     * 1. Testing Discount Rate with Valid Input
+     * 2. Testing Discount Rate when discount = 0
+     * 3. Testing Discount Rate when discount = 100
+     * 4. Testing Discount Rate when discount < 0
+     * 5. Testing Discount Rate when discount > 100
+     * */
+
+    @Test
+    public void testSetDiscountRateValidValue() {
+        int expectedDiscount = 20;
+        operator.setDiscountRate(expectedDiscount);
+        assertEquals(expectedDiscount, operator.getDiscountRate());
+    }
+
+    @Test
+    public void testSetDiscountRateEqualToZero() {
+        int expectedDiscount = 0;
+        operator.setDiscountRate(expectedDiscount);
+        assertEquals(expectedDiscount, operator.getDiscountRate());
+    }
+
+    @Test
+    public void testSetDiscountRateEqualToHundred() {
+        int expectedDiscount = 100;
+        operator.setDiscountRate(expectedDiscount);
+        assertEquals(expectedDiscount, operator.getDiscountRate());
+    }
+
+    @Test
+    public void testSetDiscountRateLessThanZero() {
+        int invalidDiscount = -10;
+
+        Throwable exception = assertThrows(
+                IllegalArgumentException.class, () -> {
+                    operator.setDiscountRate(invalidDiscount);
+                }
+        );
+        assertEquals("Discount rate must be between 0-100.", exception.getMessage());
+    }
+
+    @Test
+    public void testSetDiscountRateGreaterThanHundred() {
+        int invalidDiscount = 200;
+
+        Throwable exception = assertThrows(
+                IllegalArgumentException.class, () -> {
+                    operator.setDiscountRate(invalidDiscount);
+                }
+        );
+        assertEquals("Discount rate must be between 0-100.", exception.getMessage());
+    }
+
+
+
 }

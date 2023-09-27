@@ -123,15 +123,10 @@ public class Operator {
 	 * @param talkingCharge New talking charge of the operator per minute.
 	 */
 	public void setTalkingCharge(double talkingCharge) {
-		try {
-			if(talkingCharge < 0.0)
-				throw new IllegalArgumentException("Talking charge must be non-negative.");
-			
-			this.talkingCharge = talkingCharge;
-			
-		} catch(final IllegalArgumentException e) {
-			System.out.println(e.getMessage());
-		}
+		if(talkingCharge < 0.0)
+			throw new IllegalArgumentException("Talking charge must be non-negative.");
+
+		this.talkingCharge = talkingCharge;
 	}
 
 	/**
@@ -176,9 +171,9 @@ public class Operator {
 		try {
 			if(networkCharge < 0.0)
 				throw new IllegalArgumentException("Network charge must be non-negative.");
-			
+
 			this.networkCharge = networkCharge;
-			
+
 		} catch(final IllegalArgumentException e) {
 			System.out.println(e.getMessage());
 		}
@@ -198,15 +193,11 @@ public class Operator {
 	 * @param discountRate New discount rate of the operator as percentage.
 	 */
 	public void setDiscountRate(int discountRate) {
-		try {
-			if(discountRate < 0 || discountRate > 100)
-				throw new IllegalArgumentException("Discount rate must be between 0-100.");
-			
-			this.discountRate = discountRate;
-			
-		} catch(final IllegalArgumentException e) {
-			System.out.println(e.getMessage());
-		}
+		if(discountRate < 0 || discountRate > 100)
+			throw new IllegalArgumentException("Discount rate must be between 0-100.");
+
+		this.discountRate = discountRate;
+
 	}
 	
 	
