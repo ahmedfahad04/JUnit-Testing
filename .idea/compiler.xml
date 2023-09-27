@@ -6,7 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Unit-Testing-Qurbani-Market" />
+        <module name="Testing-Communication-Simulation" />
       </profile>
     </annotationProcessing>
   </component>
